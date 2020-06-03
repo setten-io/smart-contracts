@@ -1,6 +1,12 @@
 pragma solidity ^0.4.26;
 
 
+/***********************
+ *                     *
+ *      setten.io      *
+ *                     *
+ ***********************/
+
 contract Notary {
     mapping(bytes32 => address) private signer;
 
