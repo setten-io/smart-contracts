@@ -1,0 +1,27 @@
+{
+  "name": "smart-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "init": "truffle init",
+    "test": "truffle test",
+    "compile": "truffle compile",
+    "deploy:testnet": "truffle deploy --network testnet",
+    "deploy:mainnet": "truffle deploy --network mainnet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setten-io/smart-contracts.git"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/setten-io/smart-contracts/issues"
+  },
+  "homepage": "https://github.com/setten-io/smart-contracts#readme",
+  "dependencies": {
+    "truffle": "^5.1.28",
+    "truffle-hdwallet-provider": "^1.0.17"
+  }
+}

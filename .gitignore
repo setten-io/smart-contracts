@@ -1,3 +1,9 @@
+.vscode
+
+# Truffle
+.mnemonic
+build
+
 # Logs
 logs
 *.log
