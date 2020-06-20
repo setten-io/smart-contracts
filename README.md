@@ -2,4 +2,4 @@
 
 | Testnet                                                                                                                             | Mainnet | Name   |
 |-------------------------------------------------------------------------------------------------------------------------------------|---------|--------|
-| [0xcd215c18e1c9152916e26d5b9caeccea63f64c62](https://scan.testnet.tomochain.com/address/0xcd215c18e1c9152916e26d5b9caeccea63f64c62) |         | Notary |
+| [0xd3116a49677fbb53e7fab3278b903d71dfc0186e](https://scan.testnet.tomochain.com/address/0xd3116a49677fbb53e7fab3278b903d71dfc0186e) |         | Notary |
