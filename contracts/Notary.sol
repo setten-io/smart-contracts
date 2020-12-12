@@ -1,4 +1,5 @@
-pragma solidity ^0.4.26;
+pragma solidity ^0.6.6;
+pragma experimental ABIEncoderV2;
 
 /***********************
  *       OWNABLE       *
@@ -24,8 +25,15 @@ contract Ownable {
  *       NOTARY        *
  ***********************/
 contract Notary is Ownable {
+    struct Signature {
+        address signer;
+        uint256 date;
+        uint256 block;
+    }
+
     uint256 public fee;
-    mapping(bytes32 => address) private signer;
+    mapping(string => Signature) private hashes_signatures;
+    mapping(address => Signature[]) private signers_signatures;
 
     /**
      * @param _fee price to pay for a signature in wei
@@ -37,7 +45,11 @@ contract Notary is Ownable {
     /**
      * @dev fallback function, refusing any funds
      */
-    function() external payable {
+    fallback() external payable {
+        revert("Not accepting payments");
+    }
+
+    receive() external payable {
         revert("Not accepting payments");
     }
 
@@ -60,18 +72,44 @@ contract Notary is Ownable {
      * @dev sign a hash with the address of the sender
      * @param _hash hash to verify (md5 hash bytes in base64)
      */
-    function sign(bytes32 _hash) external payable {
-        require(signer[_hash] == address(0), "Hash already signed");
+    function sign(string calldata _hash) external payable {
+        require(
+            hashes_signatures[_hash].signer == address(0),
+            "Hash already signed"
+        );
         require(msg.value >= fee, "Not enough fee");
-        signer[_hash] = msg.sender;
+        Signature memory signature = Signature(
+            msg.sender,
+            block.timestamp,
+            block.number
+        );
+        hashes_signatures[_hash] = signature;
+        signers_signatures[msg.sender].push(signature);
     }
 
     /**
      * @dev verify if the hash has been signed by someone
      * @param _hash hash to verify (md5 hash bytes in base64)
-     * @return _signer address
+     * @return _signature
      */
-    function verify(bytes32 _hash) external view returns (address _signer) {
-        return signer[_hash];
+    function verify(string calldata _hash)
+        external
+        view
+        returns (Signature memory _signature)
+    {
+        return hashes_signatures[_hash];
+    }
+
+    /**
+     * @dev return all signed hashes from an address
+     * @param _signer address of the signer
+     * @return _signatures
+     */
+    function signatures(address _signer)
+        external
+        view
+        returns (Signature[] memory _signatures)
+    {
+        return signers_signatures[_signer];
     }
 }
