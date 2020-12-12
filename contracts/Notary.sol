@@ -32,8 +32,8 @@ contract Notary is Ownable {
     }
 
     uint256 public fee;
-    mapping(string => Signature) private hashes_signatures;
-    mapping(address => Signature[]) private signers_signatures;
+    mapping(string => Signature) private hash_signature;
+    mapping(address => Signature[]) private signer_signatures;
 
     /**
      * @param _fee price to pay for a signature in wei
@@ -74,7 +74,7 @@ contract Notary is Ownable {
      */
     function sign(string calldata _hash) external payable {
         require(
-            hashes_signatures[_hash].signer == address(0),
+            hash_signature[_hash].signer == address(0),
             "Hash already signed"
         );
         require(msg.value >= fee, "Not enough fee");
@@ -83,8 +83,8 @@ contract Notary is Ownable {
             block.timestamp,
             block.number
         );
-        hashes_signatures[_hash] = signature;
-        signers_signatures[msg.sender].push(signature);
+        hash_signature[_hash] = signature;
+        signer_signatures[msg.sender].push(signature);
     }
 
     /**
@@ -97,7 +97,7 @@ contract Notary is Ownable {
         view
         returns (Signature memory _signature)
     {
-        return hashes_signatures[_hash];
+        return hash_signature[_hash];
     }
 
     /**
@@ -110,6 +110,6 @@ contract Notary is Ownable {
         view
         returns (Signature[] memory _signatures)
     {
-        return signers_signatures[_signer];
+        return signer_signatures[_signer];
     }
 }
